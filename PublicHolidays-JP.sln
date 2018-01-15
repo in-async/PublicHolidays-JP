@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicHolidays-JP", "PublicHolidays-JP\PublicHolidays-JP.csproj", "{2FE2034A-FDA5-4C93-AF60-963FEC1FF16B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicHolidays-JP", "PublicHolidays-JP\PublicHolidays-JP.csproj", "{2FE2034A-FDA5-4C93-AF60-963FEC1FF16B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicHolidays-JP.Tests", "PublicHolidays-JP.Tests\PublicHolidays-JP.Tests.csproj", "{FC31EDAB-DBAF-4B5C-B87F-DD4E37CD2CF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2FE2034A-FDA5-4C93-AF60-963FEC1FF16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FE2034A-FDA5-4C93-AF60-963FEC1FF16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FE2034A-FDA5-4C93-AF60-963FEC1FF16B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC31EDAB-DBAF-4B5C-B87F-DD4E37CD2CF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC31EDAB-DBAF-4B5C-B87F-DD4E37CD2CF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC31EDAB-DBAF-4B5C-B87F-DD4E37CD2CF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC31EDAB-DBAF-4B5C-B87F-DD4E37CD2CF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
