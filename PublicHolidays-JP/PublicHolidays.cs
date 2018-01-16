@@ -75,7 +75,7 @@ namespace InAsync.PublicHolidays.JP {
 
                 case 8:
                     // 山の日	8月11日	山に親しむ機会を得て、山の恩恵に感謝する。
-                    if (date.Day == 1 && date.Year >= 2016) {
+                    if (date.Day == 11 && date.Year >= 2016) {
                         return NationalHoliday.山の日;
                     }
                     break;
