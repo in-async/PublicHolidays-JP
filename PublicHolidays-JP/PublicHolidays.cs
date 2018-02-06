@@ -8,40 +8,59 @@ namespace InAsync.PublicHolidays.JP {
     /// </summary>
     public static class PublicHolidays {
 
-        public static NationalHoliday GetNationalHoliday(this DateTime date) {
+        public static PublicHoliday GetPublicHoliday(this DateTime date) {
+            // 「国民の祝日」かどうか。
+            var nationalHoliday = date.GetNationalHoliday();
+            if (nationalHoliday != PublicHoliday.None) return nationalHoliday;
+
+            // 「振替休日」かどうか。
+            if (date.IsTransferHoliday()) return PublicHoliday.Transfer;
+
+            // 「国民の休日」かどうか。
+            if (date.IsCitizensHoliday()) return PublicHoliday.Citizens;
+
+            return PublicHoliday.None;
+        }
+
+        /// <summary>
+        /// 指定された日付が「国民の祝日」であれば、それに適切な <see cref="PublicHoliday"/> 列挙値を返します。
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static PublicHoliday GetNationalHoliday(this DateTime date) {
             if (date.Year <= 2006) throw new ArgumentOutOfRangeException(nameof(date), "Not supported before 2006");
 
             switch (date.Month) {
                 case 1:
                     // 元日	1月1日	年のはじめを祝う。
                     if (date.Day == 1) {
-                        return NationalHoliday.元日;
+                        return PublicHoliday.元日;
                     }
 
                     // 成人の日	1月の第2月曜日	おとなになったことを自覚し、みずから生き抜こうとする青年を祝いはげます。
                     if (date.DayOfWeek == DayOfWeek.Monday && date.WeekOfMonth() == 2) {
-                        return NationalHoliday.成人の日;
+                        return PublicHoliday.成人の日;
                     }
                     break;
 
                 case 2:
                     // 建国記念の日	2月11日	建国をしのび、国を愛する心を養う。
                     if (date.Day == 11) {
-                        return NationalHoliday.建国記念の日;
+                        return PublicHoliday.建国記念の日;
                     }
                     break;
 
                 case 3:
                     // 春分の日	春分日	自然をたたえ、生物をいつくしむ。
                     if (date.Day == EquinoxCalculator.GetVernalEquinox(date.Year)) {
-                        return NationalHoliday.春分の日;
+                        return PublicHoliday.春分の日;
                     }
                     break;
 
                 case 4:
                     // 昭和の日	4月29日	激動の日々を経て、復興を遂げた昭和の時代を顧み、国の将来に思いをいたす。
                     if (date.Day == 29) {
-                        return NationalHoliday.昭和の日;
+                        return PublicHoliday.昭和の日;
                     }
 
                     break;
@@ -49,17 +68,17 @@ namespace InAsync.PublicHolidays.JP {
                 case 5:
                     // 憲法記念日	5月3日	日本国憲法の施行を記念し、国の成長を期する。
                     if (date.Day == 3) {
-                        return NationalHoliday.憲法記念日;
+                        return PublicHoliday.憲法記念日;
                     }
 
                     // みどりの日	5月4日	自然に親しむとともにその恩恵に感謝し、豊かな心をはぐくむ。
                     if (date.Day == 4) {
-                        return NationalHoliday.みどりの日;
+                        return PublicHoliday.みどりの日;
                     }
 
                     // こどもの日	5月5日	こどもの人格を重んじ、こどもの幸福をはかるとともに、母に感謝する。
                     if (date.Day == 5) {
-                        return NationalHoliday.こどもの日;
+                        return PublicHoliday.こどもの日;
                     }
                     break;
 
@@ -69,52 +88,52 @@ namespace InAsync.PublicHolidays.JP {
                 case 7:
                     // 海の日	7月の第3月曜日	海の恩恵に感謝するとともに、海洋国日本の繁栄を願う。
                     if (date.DayOfWeek == DayOfWeek.Monday && date.WeekOfMonth() == 3) {
-                        return NationalHoliday.海の日;
+                        return PublicHoliday.海の日;
                     }
                     break;
 
                 case 8:
                     // 山の日	8月11日	山に親しむ機会を得て、山の恩恵に感謝する。
                     if (date.Day == 11 && date.Year >= 2016) {
-                        return NationalHoliday.山の日;
+                        return PublicHoliday.山の日;
                     }
                     break;
 
                 case 9:
                     // 敬老の日	9月の第3月曜日	多年にわたり社会につくしてきた老人を敬愛し、長寿を祝う。
                     if (date.DayOfWeek == DayOfWeek.Monday && date.WeekOfMonth() == 3) {
-                        return NationalHoliday.敬老の日;
+                        return PublicHoliday.敬老の日;
                     }
 
                     // 秋分の日	秋分日	祖先をうやまい、なくなった人々をしのぶ。
                     if (date.Day == EquinoxCalculator.GetAutumnalEquinox(date.Year)) {
-                        return NationalHoliday.秋分の日;
+                        return PublicHoliday.秋分の日;
                     }
                     break;
 
                 case 10:
                     // 体育の日	10月の第2月曜日	スポーツにしたしみ、健康な心身をつちかう。
                     if (date.DayOfWeek == DayOfWeek.Monday && date.WeekOfMonth() == 2) {
-                        return NationalHoliday.体育の日;
+                        return PublicHoliday.体育の日;
                     }
                     break;
 
                 case 11:
                     // 文化の日	11月3日	自由と平和を愛し、文化をすすめる。
                     if (date.Day == 3) {
-                        return NationalHoliday.文化の日;
+                        return PublicHoliday.文化の日;
                     }
 
                     // 勤労感謝の日	11月23日	勤労をたっとび、生産を祝い、国民たがいに感謝しあう。
                     if (date.Day == 23) {
-                        return NationalHoliday.勤労感謝の日;
+                        return PublicHoliday.勤労感謝の日;
                     }
                     break;
 
                 case 12:
                     // 天皇誕生日	12月23日	天皇の誕生日を祝う。
                     if (date.Day == 23) {
-                        return NationalHoliday.天皇誕生日;
+                        return PublicHoliday.天皇誕生日;
                     }
                     break;
 
@@ -122,7 +141,7 @@ namespace InAsync.PublicHolidays.JP {
                     throw new InvalidOperationException(new { date.Month }.ToString());
             }
 
-            return NationalHoliday.None;
+            return PublicHoliday.None;
         }
 
         /// <summary>
@@ -130,7 +149,7 @@ namespace InAsync.PublicHolidays.JP {
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        public static bool IsHoliday(this DateTime date) {
+        public static bool IsPublicHoliday(this DateTime date) {
             return date.IsNationalHoliday()
                 || date.IsTransferHoliday()
                 || date.IsCitizensHoliday();
@@ -142,7 +161,7 @@ namespace InAsync.PublicHolidays.JP {
         /// <param name="date"></param>
         /// <returns></returns>
         public static bool IsNationalHoliday(this DateTime date) {
-            return date.GetNationalHoliday() != NationalHoliday.None;
+            return date.GetNationalHoliday() != PublicHoliday.None;
         }
 
         /// <summary>

@@ -9,10 +9,24 @@ namespace InAsync.PublicHolidays.JP.Tests {
     public class PublicHolidaysTest {
 
         [TestMethod]
+        public void GetPublicHoliday_Test() {
+            foreach ((var date, var name) in TestDataSource) {
+                if (Enum.TryParse<PublicHoliday>(name, out var expected) == false) {
+                    expected = PublicHoliday.None;
+                }
+
+                PublicHolidays.GetPublicHoliday(date).Is(expected, $"{date:yyyy/MM/dd}");
+            }
+        }
+
+        [TestMethod]
         public void GetNationalHoliday_Test() {
             foreach ((var date, var name) in TestDataSource) {
-                if (Enum.TryParse<NationalHoliday>(name, out var expected) == false) {
-                    expected = NationalHoliday.None;
+                if (Enum.TryParse<PublicHoliday>(name, out var expected) == false
+                    || expected == PublicHoliday.Transfer
+                    || expected == PublicHoliday.Citizens
+                ) {
+                    expected = PublicHoliday.None;
                 }
 
                 PublicHolidays.GetNationalHoliday(date).Is(expected, $"{date:yyyy/MM/dd}");
@@ -20,18 +34,21 @@ namespace InAsync.PublicHolidays.JP.Tests {
         }
 
         [TestMethod]
-        public void IsHoliday_Test() {
+        public void IsPublicHoliday_Test() {
             foreach ((var date, var name) in TestDataSource) {
-                var expected = name != "";
+                var expected = (name != "");
 
-                PublicHolidays.IsHoliday(date).Is(expected, $"{date:yyyy/MM/dd}");
+                PublicHolidays.IsPublicHoliday(date).Is(expected, $"{date:yyyy/MM/dd}");
             }
         }
 
         [TestMethod]
         public void IsNationalHoliday_Test() {
             foreach ((var date, var name) in TestDataSource) {
-                var expected = Enum.TryParse<NationalHoliday>(name, out _);
+                var expected = Enum.TryParse<PublicHoliday>(name, out var output)
+                    && output != PublicHoliday.Transfer
+                    && output != PublicHoliday.Citizens
+                    ;
 
                 PublicHolidays.IsNationalHoliday(date).Is(expected, $"{date:yyyy/MM/dd}");
             }
@@ -40,7 +57,8 @@ namespace InAsync.PublicHolidays.JP.Tests {
         [TestMethod]
         public void IsTransferHoliday_Test() {
             foreach ((var date, var name) in TestDataSource) {
-                var expected = name == "振替休日";
+                var expected = (name == nameof(PublicHoliday.Transfer));
+
                 PublicHolidays.IsTransferHoliday(date).Is(expected, $"{date:yyyy/MM/dd}");
             }
         }
@@ -48,7 +66,8 @@ namespace InAsync.PublicHolidays.JP.Tests {
         [TestMethod]
         public void IsCitizensHoliday_Test() {
             foreach ((var date, var name) in TestDataSource) {
-                var expected = name == "国民の休日";
+                var expected = (name == nameof(PublicHoliday.Citizens));
+
                 PublicHolidays.IsCitizensHoliday(date).Is(expected, $"{date:yyyy/MM/dd}");
             }
         }
@@ -69,10 +88,10 @@ namespace InAsync.PublicHolidays.JP.Tests {
 2015/05/03,憲法記念日
 2015/05/04,みどりの日
 2015/05/05,こどもの日
-2015/05/06,振替休日
+2015/05/06,Transfer
 2015/07/20,海の日
 2015/09/21,敬老の日
-2015/09/22,国民の休日
+2015/09/22,Citizens
 2015/09/23,秋分の日
 2015/10/12,体育の日
 2015/11/03,文化の日
@@ -82,7 +101,7 @@ namespace InAsync.PublicHolidays.JP.Tests {
 2016/01/11,成人の日
 2016/02/11,建国記念の日
 2016/03/20,春分の日
-2016/03/21,振替休日
+2016/03/21,Transfer
 2016/04/29,昭和の日
 2016/05/03,憲法記念日
 2016/05/04,みどりの日
@@ -96,7 +115,7 @@ namespace InAsync.PublicHolidays.JP.Tests {
 2016/11/23,勤労感謝の日
 2016/12/23,天皇誕生日
 2017/01/01,元日
-2017/01/02,振替休日
+2017/01/02,Transfer
 2017/01/09,成人の日
 2017/02/11,建国記念の日
 2017/03/20,春分の日
@@ -115,10 +134,10 @@ namespace InAsync.PublicHolidays.JP.Tests {
 2018/01/01,元日
 2018/01/08,成人の日
 2018/02/11,建国記念の日
-2018/02/12,振替休日
+2018/02/12,Transfer
 2018/03/21,春分の日
 2018/04/29,昭和の日
-2018/04/30,振替休日
+2018/04/30,Transfer
 2018/05/03,憲法記念日
 2018/05/04,みどりの日
 2018/05/05,こどもの日
@@ -126,12 +145,12 @@ namespace InAsync.PublicHolidays.JP.Tests {
 2018/08/11,山の日
 2018/09/17,敬老の日
 2018/09/23,秋分の日
-2018/09/24,振替休日
+2018/09/24,Transfer
 2018/10/08,体育の日
 2018/11/03,文化の日
 2018/11/23,勤労感謝の日
 2018/12/23,天皇誕生日
-2018/12/24,振替休日
+2018/12/24,Transfer
 2019/01/01,元日
 2019/01/14,成人の日
 2019/02/11,建国記念の日
@@ -140,15 +159,15 @@ namespace InAsync.PublicHolidays.JP.Tests {
 2019/05/03,憲法記念日
 2019/05/04,みどりの日
 2019/05/05,こどもの日
-2019/05/06,振替休日
+2019/05/06,Transfer
 2019/07/15,海の日
 2019/08/11,山の日
-2019/08/12,振替休日
+2019/08/12,Transfer
 2019/09/16,敬老の日
 2019/09/23,秋分の日
 2019/10/14,体育の日
 2019/11/03,文化の日
-2019/11/04,振替休日
+2019/11/04,Transfer
 2019/11/23,勤労感謝の日
 2019/12/23,天皇誕生日
 2020/01/01,元日
@@ -159,7 +178,7 @@ namespace InAsync.PublicHolidays.JP.Tests {
 2020/05/03,憲法記念日
 2020/05/04,みどりの日
 2020/05/05,こどもの日
-2020/05/06,振替休日
+2020/05/06,Transfer
 2020/07/20,海の日
 2020/08/11,山の日
 2020/09/21,敬老の日
